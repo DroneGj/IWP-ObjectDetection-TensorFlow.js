@@ -4,19 +4,17 @@ console.log("loading coco-ssd model...")
 cocoSsd.load().then(function (res) {
     model = res
     console.log("done")
-    $("#upload_btn_load").attr("title", "Ready")
-    $("#web-cam-btn").attr("title", "Ready")
-    setTimeout(function () {
-        $("#upload_btn_load").attr("title", "")
-        $("#web-cam-btn").attr("title", "")
-    }, 1000)
+    $("#loadts").addClass("display-none")
+    $("#loadedts").removeClass("display-none")
+    $("#model-load").delay(1000).fadeOut(800)
     $("#upload_btn_load").removeClass("disabled")
     $("#web-cam-btn").removeClass("disabled")
 }, function () {
     //failure
     console.log("loading tf model failed")
-    $("#upload_btn_load").attr("title", "Failed to load tf model in browser")
-    $("#web-cam-btn").attr("title", "Failed to load tf model in browser")
+    $("#loadts").addClass("display-none")
+    $("#loadedts").removeClass("display-none")
+    $("#loadedinfo").text("Model Loading Failed ❌")
 });
 
 function draw_sample_image_in_canvas() {
@@ -62,7 +60,7 @@ function draw_label(ctx, predictions) {
 }
 
 function draw_res_image(canvas, ctx, image, predictions) {
-	$("#canvas").removeClass("display-none")
+    $("#canvas").removeClass("display-none")
     const font = "16px sans-serif";
 
     canvas.width = image.width;
@@ -123,7 +121,7 @@ function upload_image() {
 
     if (file) {
         ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-		$("#canvas").addClass("display-none")
+        $("#canvas").addClass("display-none")
         $("#spinner").show()
         reader.readAsDataURL(file);
     }
@@ -209,7 +207,7 @@ function load_webcam() {
             video.onloadedmetadata = () => {
                 video.play()
                 $("#web-cam-poster").addClass("display-none")
-				$("#canvas-video").removeClass("display-none")
+                $("#canvas-video").removeClass("display-none")
                 $("#web-cam-btn").addClass("display-none")
                 $("#close-web-cam").removeClass("display-none")
                 detectFrame()
